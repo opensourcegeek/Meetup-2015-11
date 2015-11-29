@@ -11601,6 +11601,17 @@ Elm.Main.make = function (_elm) {
    var getText = function (ts) {
       return $String.concat(getColours(ts));
    };
+   var isEven = function (n) {
+      return _U.eq(A2($Basics._op["%"],n,2),0) ? true : false;
+   };
+   var mkSecondsNode = function (s) {
+      return A2($Html.div,
+      _U.list([$Html$Attributes.classList(_U.list([{ctor: "_Tuple2"
+                                                   ,_0: "bigBlocks"
+                                                   ,_1: true}
+                                                  ,{ctor: "_Tuple2",_0: "secondsGreen",_1: isEven(s)}]))]),
+      _U.list([]));
+   };
    var minutesFactor = 5;
    var topRowMinutes = function (m) {
       return A2($List.take,
@@ -11649,6 +11660,9 @@ Elm.Main.make = function (_elm) {
               A2($Basics._op["++"]," : ",second$))))))
               ,A2($Html.div,
               _U.list([]),
+              _U.list([mkSecondsNode($Date.second(date$))]))
+              ,A2($Html.div,
+              _U.list([]),
               getBigColouredNodes(getColours(topRowHours($Date.hour(date$)))))
               ,A2($Html.div,
               _U.list([]),
@@ -11667,6 +11681,7 @@ Elm.Main.make = function (_elm) {
                              ,hoursFactor: hoursFactor
                              ,minutesFactor: minutesFactor
                              ,main: main
+                             ,isEven: isEven
                              ,topRowHours: topRowHours
                              ,bottomRowHours: bottomRowHours
                              ,topRowMinutes: topRowMinutes
@@ -11676,6 +11691,7 @@ Elm.Main.make = function (_elm) {
                              ,isRed: isRed
                              ,mkBigNode: mkBigNode
                              ,mkNode: mkNode
+                             ,mkSecondsNode: mkSecondsNode
                              ,getColouredNodes: getColouredNodes
                              ,getBigColouredNodes: getBigColouredNodes
                              ,currentTime: currentTime};

@@ -20,10 +20,14 @@ minutesFactor = 5
 --minutesBottomRowFactor : Int
 --minutesBottomRowFactor = 5 
 
---import Html.Attributes exposing (style)
 main : Signal Html
 main = Signal.map currentTime (Time.every Time.second) 
 
+
+isEven : Int -> Bool
+isEven n = if
+    n % 2 == 0 then True
+    else False
 
 topRowHours : Int -> List Bool
 topRowHours h = List.take 4 (List.repeat (h // hoursFactor) True ++ List.repeat 4 False)
@@ -70,6 +74,14 @@ mkNode color = div [
         ] 
     ] []
 
+mkSecondsNode : Int -> Html
+mkSecondsNode s = div [
+        classList [
+            ("bigBlocks", True)
+            , ("secondsGreen", isEven s)
+        ]
+    ] []
+
 
 getColouredNodes : List String -> List Html
 getColouredNodes colors = List.map mkNode colors
@@ -88,6 +100,7 @@ currentTime t =
   in 
       div [] [ 
           text ("Time: " ++ hour' ++ " : " ++ minute' ++ " : " ++ second' )
+          , div [] [ mkSecondsNode (Date.second date') ]
           , div [] (getBigColouredNodes ( getColours ( topRowHours (Date.hour date') ) ) )
           , div [] (getBigColouredNodes ( getColours ( bottomRowHours (Date.hour date') ) ) ) 
           , div [] (getColouredNodes ( getColours ( topRowMinutes (Date.minute date') ) ) )
